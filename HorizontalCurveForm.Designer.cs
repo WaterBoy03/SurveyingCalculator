@@ -577,7 +577,7 @@ namespace SurveyingCalculator
             this.Controls.Add(this.grpBox_CurveDefinition);
             this.Controls.Add(this.grpBox_Units);
             this.Name = "HorizontalCurveForm";
-            this.Text = "HorizontalCurveForm";
+            this.Text = "Horizontal Curve Calculation";
             this.grpBox_Units.ResumeLayout(false);
             this.grpBox_Units.PerformLayout();
             this.grpBox_CurveDefinition.ResumeLayout(false);
