@@ -17,8 +17,6 @@ namespace SurveyingCalculator
             InitializeComponent();
         }
 
-
-
         void Btn_AngleConversionConvert_Click(object sender, EventArgs e)
         {
             double radian;
@@ -42,6 +40,11 @@ namespace SurveyingCalculator
                     //validates for numbers
                     decimalDegree = ValitationOfTheDMSToDecDeg(txtBox_AngleConversionDegree, txtBox_AngleConversionMinute, txtBox_AngleConversionSecond,"");
                     radian = decimalDegree * Math.PI / 180;
+
+                    //added on 4/20/2021 to reduce angles to between 0 and 2*PI.
+                    double over2PICheck = Math.Floor(radian / (2 * Math.PI));
+                    radian = radian - over2PICheck * 2 * Math.PI;
+
                     ConvertedAngleAnswerAndVisibility(radian, cmbBox_ConvertAngleUnitsTo.Text);
 
 
@@ -86,6 +89,10 @@ namespace SurveyingCalculator
             {
                 radian = angle;
             }
+
+            //added on 4/20/2021 to reduce angles to between 0 and 2*PI.
+            double over2PICheck = Math.Floor(radian / (2*Math.PI));
+            radian = radian - over2PICheck * 2 * Math.PI;
 
             return radian;
         }
@@ -297,7 +304,6 @@ namespace SurveyingCalculator
                     //validates for numbers
                     decimalDegree = ValitationOfTheDMSToDecDeg(txtBox_AzBearDegree, txtBox_AzBearMinute, txtBox_AzBearSecond, cmbBox_AzBearUnits.Text);
                                     
-
                 }
                 else
                 {
@@ -311,6 +317,11 @@ namespace SurveyingCalculator
             
         }
 
+        /// <summary>
+        /// A method for displaying Azimuths and Bearings.
+        /// </summary>
+        /// <param name="azimuth"></param>
+        /// <param name="text"></param>
         void DisplayingAzimuthOrBearing(double azimuth, string text)
         {
             (string direction, double decDegree) bearing;
@@ -511,17 +522,26 @@ namespace SurveyingCalculator
             {
                 MessageBox.Show("Bearings can only be between 0° and 90°.");
             }
+
             return decimalDegree;
 
         }
+
+        /// <summary>
+        /// A method that validates doubles.
+        /// </summary>
+        /// <param name="txtBox1"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         double ValidationOfAnyDoubleNumber(TextBox txtBox1,string text)
         {
             double decimalDegree = 0;
             if (!double.TryParse(txtBox1.Text, out double angle))
             {
                 MessageBox.Show("Please do not enter letters.");
+
             }
-            else if (text== "bearing decimal degree"&&(angle<0||angle>90))
+            else if (text== "bearing decimal degree" && (angle<0||angle>90))
             {
                 MessageBox.Show("Bearings can only be between 0° and 90°.");
             }
@@ -532,6 +552,12 @@ namespace SurveyingCalculator
             return decimalDegree;
         }
 
+        /// <summary>
+        /// A method that fills in the blank DMS boxes with 0.
+        /// </summary>
+        /// <param name="txtBox1"></param>
+        /// <param name="txtBox2"></param>
+        /// <param name="txtBox3"></param>
         void FillsInDMSBlanksWithZeroes(TextBox txtBox1, TextBox txtBox2, TextBox txtBox3)
         {
             while (txtBox1.Text == "" ||

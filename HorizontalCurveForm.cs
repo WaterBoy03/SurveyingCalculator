@@ -849,14 +849,17 @@ namespace SurveyingCalculator
         {
             double radius;
 
-            if(radBtn_ArcDefinition.Checked==true)
+            //I changed it so the if statement was dependent on if the Chord Definition was checked.
+            //The problem was that I had 500 instead of 50 for the radius calculation.
+            if(radBtn_ChordDefinition.Checked==true)
             {
-                radius = 18000 / (Math.PI * degree);
+                double rad = degree * Math.PI / 180;
+                radius = 50 / Math.Sin(rad / 2);
             }
             else
             {
-                double rad = degree * Math.PI / 180;
-                radius = 500 / Math.Sin(rad / 2);
+                
+                radius = 18000 / (Math.PI * degree);
             }
 
             if(radBtn_Meter.Checked==true)
@@ -876,20 +879,9 @@ namespace SurveyingCalculator
         {
             double degreeOfCurve;
 
-            if(radBtn_ArcDefinition.Checked==true)
-            {
-                if (radBtn_Feet.Checked == true)
-                {
-                    degreeOfCurve = 18000 / (Math.PI * radius);
-                }
-
-                //A conversion into feet from meters as the equation was made for feet.
-                else
-                {
-                    degreeOfCurve = 18000 / (Math.PI * radius/.3048);
-                }
-            }
-            else
+            //I made the if statement dependent on if the chord definition is checked as it was not giving me the right answer.
+            //fixed on 4/20/21
+            if(radBtn_ChordDefinition.Checked==true)
             {
                 double degreeRad;
                 if (radBtn_Feet.Checked == true)
@@ -901,9 +893,23 @@ namespace SurveyingCalculator
                 //A conversion into feet from meters as the equation was made for feet.
                 else
                 {
-                    degreeRad = 2 * Math.Asin(50 / (radius/.3048));
+                    degreeRad = 2 * Math.Asin(50 / (radius / .3048));
                     degreeOfCurve = degreeRad * 180 / Math.PI;
                 }
+                
+            }
+            else
+            {
+               if (radBtn_Feet.Checked == true)
+                {
+                    degreeOfCurve = 18000 / (Math.PI * radius);
+                }
+
+                //A conversion into feet from meters as the equation was made for feet.
+                else
+                {
+                    degreeOfCurve = 18000 / (Math.PI * radius/.3048);
+                } 
             }
             return degreeOfCurve;
         }

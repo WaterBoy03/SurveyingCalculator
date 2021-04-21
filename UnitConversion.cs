@@ -284,6 +284,13 @@ namespace SurveyingCalculator
             return volumeConverted;
         }
 
+
+        /// <summary>
+        /// The button method converts the temperature between degrees.
+        /// I put a limit on how low of an input a user can enter based on being below 0 K. 4/20/2021
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Btn_TempConvert_Click(object sender, EventArgs e)
         {
             double tempConverted = 0;
@@ -296,6 +303,18 @@ namespace SurveyingCalculator
             else if (cmbBox_UnitTemp.Text == "" || cmbBox_TempConvertToUnit.Text == "")
             {
                 MessageBox.Show("Please select the units for the conversion.");
+            }
+            else if (cmbBox_UnitTemp.Text== "°F" && temp <-459.67)
+            {
+                MessageBox.Show("That is below absolute 0.");
+            }
+            else if (cmbBox_UnitTemp.Text == "°C" && temp < -273.15)
+            {
+                MessageBox.Show("That is below absolute 0.");
+            }
+            else if (cmbBox_UnitTemp.Text == "K" && temp < 0)
+            {
+                MessageBox.Show("That is below absolute 0.");
             }
 
             else
